@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>登记注册</title>
+    <meta name="description" content="店尚软件"/>
+    <meta name="keywords"
+          content="店尚软件,活动,伯恩网络科技,微卡APP"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/weui.min.css" type="text/css"/>
+</head>
+<body>
+<ion-view>
+     <div class="weui_cells weui_cells_form">
+            <div class="weui_cell ">
+                <div class="weui_cell_hd"><label class="weui_label">手机</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="phone" name="phone" class="weui_input" type="tel" placeholder="请输入手机号码">
+                </div>
+                <div class="weui_cell_ft weui_cell_primary">
+                    <button id="getcode" type="button"  class="weui_btn weui_btn_mini weui_btn_primary">获取验证码</button>
+                </div>
+            </div>
+            <div class="weui_cell ">
+                <div class="weui_cell_hd"><label class="weui_label">验证码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="code" name="code"  class="weui_input" type="tel" placeholder="请输入短信验证码">
+                </div>
+            </div>
+        </div>
+</ion-view>
+</body>
+</html>

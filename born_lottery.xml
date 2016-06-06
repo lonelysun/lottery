@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <menuitem name="活动" id="menu_born_lottery_root" sequence="10"/>
+
+        <record id="born_activity_tpl_form" model="ir.ui.view">
+            <field name="name">born.activity.tpl.form</field>
+            <field name="model">born.activity.tpl</field>
+            <field name="arch" type="xml">
+                <form string="活动模版">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                           <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="file_name" invisible="True"/>
+                            <field name="image" filename="file_name" widget='image'
+                                   options='{"preview_image": "image"}'/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="company_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="app_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="price"/>
+                                <field name="game_id" options="{'no_create': True,'no_open':True}"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note"/>
+                        </group>
+
+                        <notebook>
+                            <page string="活动报名">
+                                <field name="activity_ids">
+                                    <tree string="活动报名">
+                                        <field name="company_id"/>
+                                        <field name="born_uuid"/>
+                                        <field name="hits"/>
+                                        <field name="game_chance"/>
+                                        <field name="user_id"/>
+                                        <field name="status" />
+                                        <field name="payment_id" readonly="1"/>
+                                        <field name="create_date" readonly="1" string="报名时间"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="允许参与的公司">
+                                <field name="company_ids" string="允许发行的公司"/>
+                            </page>
+                            <page string="默认奖品">
+                                <field name="default_gift_ids"  string="默认奖品"/>
+                            </page>
+                        </notebook>
+                        <field name="description" widget='html'/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="born_activity_tpl_list" model="ir.ui.view">
+            <field name="name">born.activity.tpl.list</field>
+            <field name="model">born.activity.tpl</field>
+            <field name="arch" type="xml">
+                <tree string="模板">
+                    <field name="company_id"/>
+                    <field name="name"/>
+                    <field name="app_id"/>
+                    <field name="price"/>
+                    <field name="game_id"/>
+                    <field name="create_date" string="创建时间"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="born_activity_tpl_search" model="ir.ui.view">
+            <field name="name">born.activity.tpl.search</field>
+            <field name="model">born.activity.tpl</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_born_activity_tpl" model="ir.actions.act_window">
+            <field name="name">模板</field>
+            <field name="res_model">born.activity.tpl</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="view_id" ref="born_activity_tpl_list"/>
+            <field name="search_view_id" ref="born_activity_tpl_search"/>
+        </record>
+
+
+        <record id="born_activity_form" model="ir.ui.view">
+            <field name="name">born.activity.form</field>
+            <field name="model">born.activity</field>
+            <field name="arch" type="xml">
+                <form string="活动报名">
+                    <header>
+                        <field name="status" widget="statusbar" clickable="True"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="active_tpl_id" class="oe_edit_only"/>
+                            <h1>
+                                <field name="active_tpl_id" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="banner" widget="image" class="oe_avatar"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="company_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="user_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="create_date" string="报名时间" readonly="1"/>
+                                <field name="is_force_regist" />
+                                <field name="payment_id" readonly="1" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                               <field name="game_id" readonly="1" attrs="{'invisible':[('game_id','=',False)]}" options="{'no_create': True}"/>
+                                <field name="game_chance" attrs="{'invisible':[('game_id','=',False)]}"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="基础信息">
+                                <group>
+                                    <group>
+                                        <field name="app_id"/>
+                                        <field name="hits"/>
+                                        <field name="born_uuid" readonly="1"/>
+                                        <field name="activity_url" readonly="1"/>
+                                        <field name="activity_url_qrcode" widget="image"/>
+                                        <field name="weixin_url" invisible="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="奖品" attrs="{'invisible':[('game_id','=',False)]}">
+                                <field name="gift_ids">
+                                    <tree string="奖品" editable="bottom">
+                                        <field name="name"/>
+                                        <field name="gift_id"/>
+                                        <field name="level"/>
+                                        <field name="qty"/>
+                                        <field name="probability"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="参与情况" >
+                                <field name="join_ids"/>
+                            </page>
+                        </notebook>
+                         <field name="explanation" widget='html'/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="born_activity_list" model="ir.ui.view">
+            <field name="name">born.activity.list</field>
+            <field name="model">born.activity</field>
+            <field name="arch" type="xml">
+                <tree string="活动">
+                    <field name="active_tpl_id"/>
+                    <field name="company_id"/>
+                    <field name="user_id"/>
+                    <field name="born_uuid"/>
+                    <field name="status"/>
+                    <field name="hits"/>
+                    <field name="create_date" string="参加日期"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_born_activity" model="ir.actions.act_window">
+            <field name="name">商户活动</field>
+            <field name="res_model">born.activity</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="view_id" ref="born_activity_list"/>
+        </record>
+
+
+        <record id="born_activity_result_form" model="ir.ui.view">
+            <field name="name">born.activity.result.form</field>
+            <field name="model">born.activity.result</field>
+            <field name="arch" type="xml">
+                <form string="参与情况">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="activity_id" class="oe_edit_only" />
+                            <h1>
+                                <field name="activity_id" class="oe_inline" options="{'no_create': True,'no_open':True}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="weixin_user_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="partner_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="activity_gift_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="payment_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="create_date" readonly="1" string="日期"/>
+                            </group>
+                            <group>
+
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="born_activity_result_list" model="ir.ui.view">
+            <field name="name">born.activity.result.list</field>
+            <field name="model">born.activity.result</field>
+            <field name="arch" type="xml">
+                <tree string="参与情况">
+                    <field name="activity_id"/>
+                    <field name="weixin_user_id"/>
+                    <field name="partner_id"/>
+                    <field name="payment_id"/>
+                    <field name="activity_gift_id"/>
+                     <field name="create_date" string="参加日期"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_born_activity_result" model="ir.actions.act_window">
+            <field name="name">参与情况</field>
+            <field name="res_model">born.activity.result</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="view_id" ref="born_activity_result_list"/>
+        </record>
+
+
+        <record id="born_game_gift_form" model="ir.ui.view">
+            <field name="name">born.game.gift.form</field>
+            <field name="model">born.game.gift</field>
+            <field name="arch" type="xml">
+                <form string="游戏奖品">
+                    <sheet>
+
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="image" widget="image"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="product_id" options="{'no_create': True,'no_open':True}"/>
+                                 <field name="wxcard_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="redpack_amount"/>
+                            </group>
+                            <group>
+
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="born_game_gift_list" model="ir.ui.view">
+            <field name="name">born.game.gift.list</field>
+            <field name="model">born.game.gift</field>
+            <field name="arch" type="xml">
+                <tree string="游戏奖品">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <field name="wxcard_id"/>
+                    <field name="redpack_amount"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_born_game_gift" model="ir.actions.act_window">
+            <field name="name">游戏奖品</field>
+            <field name="res_model">born.game.gift</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="view_id" ref="born_game_gift_list"/>
+        </record>
+
+
+        <record id="born_game_form" model="ir.ui.view">
+            <field name="name">born.game.form</field>
+            <field name="model">born.game</field>
+            <field name="arch" type="xml">
+                <form string="游戏">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="file_name" invisible="True"/>
+                            <field name="image" filename="file_name" widget='image'
+                                   options='{"preview_image": "image"}'/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="path"/>
+                                <field name="note"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+
+                        <field name="description" widget='html'/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="born_game_list" model="ir.ui.view">
+            <field name="name">born.game.list</field>
+            <field name="model">born.game</field>
+            <field name="arch" type="xml">
+                <tree string="游戏">
+                    <field name="name"/>
+                    <field name="path"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_born_game" model="ir.actions.act_window">
+            <field name="name">游戏</field>
+            <field name="res_model">born.game</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="view_id" ref="born_game_list"/>
+        </record>
+
+        <record id="born_account_form" model="ir.ui.view">
+            <field name="name">born.account.form</field>
+            <field name="model">born.account</field>
+            <field name="arch" type="xml">
+                <form string="账户">
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="user_id"/>
+                                <field name="amount"/>
+                            </group>
+                            <group>
+                                <field name="point"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="账户履历">
+                                <field name="line_ids">
+                                    <tree string="账户履历" editable="bottom">
+                                        <field name="amount"/>
+                                        <field name="point"/>
+                                        <field name="type"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="born_account_list" model="ir.ui.view">
+            <field name="name">born.account.list</field>
+            <field name="model">born.account</field>
+            <field name="arch" type="xml">
+                <tree string="账户">
+                    <field name="user_id"/>
+                    <field name="amount"/>
+                    <field name="point"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_born_account" model="ir.actions.act_window">
+            <field name="name">账户</field>
+            <field name="res_model">born.account</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="view_id" ref="born_account_list"/>
+        </record>
+
+        <record id="born_activity_payment_form" model="ir.ui.view">
+            <field name="name">born.activity.payment.form</field>
+            <field name="model">born.activity.payment</field>
+            <field name="arch" type="xml">
+                <form string="付款">
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="activity_id"/>
+                                <field name="amount"/>
+                            </group>
+                            <group>
+                                <field name="journal_id"/>
+                                <field name="serial_number"/>
+                            </group>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="born_activity_payment_list" model="ir.ui.view">
+            <field name="name">born.activity.payment.list</field>
+            <field name="model">born.activity.payment</field>
+            <field name="arch" type="xml">
+                <tree string="付款">
+                    <field name="activity_id"/>
+                    <field name="amount"/>
+                    <field name="journal_id"/>
+                    <field name="serial_number"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_born_activity_payment" model="ir.actions.act_window">
+            <field name="name">付款</field>
+            <field name="res_model">born.activity.payment</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="view_id" ref="born_activity_payment_list"/>
+        </record>
+
+
+        <menuitem name="活动" id="menu_born_lottery_activity" sequence="1" parent="menu_born_lottery_root"/>
+        <menuitem name="模版" id="menu_born_activity_tpl" sequence="1" action="action_born_activity_tpl"
+                  parent="menu_born_lottery_activity"/>
+        <menuitem name="参与情况" id="menu_born_activity_result" sequence="3" action="action_born_activity_result"
+                  parent="menu_born_lottery_activity"/>
+        <menuitem name="商户活动" id="menu_born_activity" sequence="2" action="action_born_activity"
+                  parent="menu_born_lottery_activity"/>
+        <menuitem name="游戏" id="menu_born_lottery_game" sequence="2" parent="menu_born_lottery_root"/>
+        <menuitem name="游戏" id="menu_born_game" sequence="1" action="action_born_game" parent="menu_born_lottery_game"/>
+        <menuitem name="奖品" id="menu_born_game_gift" sequence="2" action="action_born_game_gift"
+                  parent="menu_born_lottery_game"/>
+
+        <menuitem name="账号" id="menu_born_lottery_account" sequence="2" parent="menu_born_lottery_root"/>
+        <menuitem name="账号" id="menu_born_account" sequence="1" action="action_born_account"
+                  parent="menu_born_lottery_account"/>
+        <menuitem name="付款" id="menu_born_activity_payment" sequence="2" action="action_born_activity_payment"
+                  parent="menu_born_lottery_account"/>
+
+
+    </data>
+</openerp>

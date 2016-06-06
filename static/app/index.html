@@ -1,0 +1,34 @@
+# -*- coding: utf-8 -*-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>${activity.active_tpl_id.name}</title>
+    <meta name="description" content="店尚软件"/>
+    <meta name="keywords"
+          content="店尚软件,活动,伯恩网络科技,微卡APP"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/app.css" type="text/css"/>
+</head>
+<body>
+<ion-view>
+    <div id="content">
+
+        <div >
+            <a href="${activity.game_url}">
+          <img src="${activity.game_id.image_url}" class="img-full" alt="...">
+            </a>
+        </div>
+        <div id="features" class="bg-white-only">
+            <div class="container">
+                <div class="list-unstyled  m-t-xl">
+                    ${activity.active_tpl_id.description}
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-view>
+</body>
+</html>

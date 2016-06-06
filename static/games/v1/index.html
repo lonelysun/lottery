@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title> ${game["game_name"]}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+    <link rel="stylesheet" href="/born_lottery/static/games/v1/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/games/v1/css/activity-style.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/games/v1/css/weui.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/games/v1/css/jquery-weui.min.css" type="text/css"/>
+    <script type="text/javascript" src="/born_lottery/static/games/v1/js/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="/born_lottery/static/games/v1/js/jQueryRotate.2.2.js"></script>
+    <script type="text/javascript" src="/born_lottery/static/games/v1/js/jquery-weui.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body class="activity-lottery-winning">
+
+<div style="background-color:black;height: 42px;padding-top:10px">
+    <div class="pull-left" style="color:white;padding-left:30px">
+        <strong>${game['company_name']}</strong>
+    </div>
+    <div class="pull-right" style="padding-right: 30px;">
+        <a href="${game['subscribe_url']}" style="color:#ff4848">立即关注</a>
+    </div>
+</div>
+<div class="text-center" style="color:white;padding-top:25px">
+    您总共有<span style="color:#fdcc0d">${game['game_chance']}</span>次抽奖机会，还剩<span id="game_chance"
+        style="color:#fdcc0d">${game['remain_qty']}</span>次抽奖机会
+</div>
+<div class="main">
+    <div id="outercont">
+        <div id="outer-cont">
+            <div id="outer">
+                <img src="/born_lottery/static/games/v1/activity-lottery-1.png" width=310>
+            </div>
+        </div>
+        <div id="inner-cont">
+            <div id="inner">
+                <img src="/born_lottery/static/games/v1/activity-lottery-2.png" width=310>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div style="max-height:250px;overflow-y:scroll;color:white;background-color: #0b0b0b;margin-bottom:10px;">
+            % for price in game['join_price_ids']:
+            %if price.activity_gift_id:
+            <div style="">
+                <img src="/born_lottery/static/games/v1/activity-lottery-1.png" class="pull-left"
+                     style="width:60px;padding: 10px;">
+                    <span>
+                        <div style="padding-top:10px">${price.name} </div>
+                        <div style="padding-bottom:10px">抽中了<span
+                                style="color:#fdcc0d">${price.activity_gift_id.name}</span>,获得${price.activity_gift_id.gift_id.name}</div>
+                    </span>
+            </div>
+            % endif
+            % endfor
+        </div>
+    </div>
+
+
+    <div class="content" style="padding-bottom:20px;">
+        <div class="boxcontent boxyellow">
+            <div class="box">
+                <div class="Detail">
+                    % for gift in game['gift_ids']:
+                    <p class="block m-t-xs">${gift.name}：${gift.gift_id.name}</p>
+
+                    % endfor
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="${game['account_url']}">
+    <div class="text-center v1-btn" style="background-color: #ff4848;margin: 0 19px;color:white;padding:20px 0;">
+        查看我的奖品
+    </div>
+</a>
+
+<div class="text-center ng-scope" style="color:#ffffff">
+    <a href="javascript:;" class="text-center   open-popup" data-target="#about">
+        <p class="weui_grid_label" style='color:#ffffff;padding:10px;'>
+            活动规则
+        </p>
+    </a>
+</div>
+<div class="text-center ng-scope" style="color:#ffffff">
+    <a href="http://www.we-erp.com" class="ng-scope">
+        <small class="text-muted" style="color:#c90003">上海波恩网络科技服务有限公司<br>© 2015</small>
+    </a>
+</div>
+
+
+<div id="about" class='weui-popup-container'>
+    <div class="weui-popup-modal">
+
+        <article class="weui_article">
+            <section>
+                <h2 class="title">游戏活动规则</h2>
+                <section>
+                    <p>${game['game_description']}</p>
+                </section>
+            </section>
+            <section>
+                <a href="javascript:;" class="weui_btn weui_btn_primary close-popup">关闭</a>
+            </section>
+        </article>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var dataObj = [67, 22, 112, 202, 157, 247, 292, 337];
+    $(function () {
+        wx.config({
+            debug: false,
+            appId: '${data['appId']}',
+            timestamp: '${data['timestamp']}',
+            nonceStr: '${data['nonceStr']}',
+            signature: '${data['signature']}',
+            jsApiList: [
+                'addCard',
+            ]
+        });
+        wx.ready(function () {
+        });
+
+
+        var rotating = false;
+        var rotateFunc = function (num, type, data) {
+            rotating = true;
+            $("#inner").rotate({
+                angle: 0, //起始角度
+                duration: 4000, //转动时间
+                animateTo: num + 7200,  //结束的角度
+                callback: function () {
+                    rotating = false;
+                    $.alert(data.errmsg, data.data['name']);
+                    var game_chance=data.data['game_chance'];
+                    $("#game_chance").html(game_chance);
+                    if (data.data['cardExt'] && data.data['cardId']) {
+                        wx.addCard({
+                            cardList: [{
+                                cardId: data.data['cardId'],
+                                cardExt: data.data['cardExt']
+                            }],
+                            success: function (res) {
+                                var cardList = res.cardList;
+                            }
+                        });
+                        wx.error(function (res) {
+                        });
+                    }
+                }
+            });
+        };
+        $("#inner").bind("click", function () {
+            /***
+             * ajax操作返回数据*
+             ***/
+            $.ajax({
+                type: 'POST',
+                url: '/activity_game_gift/' +${game['born_uuid']},
+                data: {},
+                success: function (data) {
+                    if (data.errcode == 0) {
+                        var key = data.data['level'];
+                        if (key == 0) {
+                            var tt = [0, 4, 5, 6, 7]
+                            key = tt[Math.round(Math.random() * (tt.length - 1))];
+
+                        }
+                        !rotating && rotateFunc(dataObj[key], key, data);
+                    } else {
+                        $.alert(data.errmsg, '提示');
+                    }
+                },
+                dataType: 'json'
+            });
+
+        });
+    });
+
+    function getRandom(min, max) {
+        //x上限，y下限
+        var x = max;
+        var y = min;
+        if (x < y) {
+            x = min;
+            y = max;
+        }
+        var rand = parseInt(Math.random() * (x - y + 1) + y);
+        return rand;
+    }
+
+</script>
+</body>
+</html>

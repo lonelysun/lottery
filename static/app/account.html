@@ -1,0 +1,79 @@
+# -*- coding: utf-8 -*-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>个人中心</title>
+    <meta name="description" content="店尚软件"/>
+    <meta name="keywords"
+          content="店尚软件,活动,伯恩网络科技,微卡APP"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/font-awesome.min.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/born_lottery/static/app/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/weui.css" type="text/css"/>
+</head>
+<body style="background-color: #f6f7f7">
+<ion-view>
+    <div style="padding-top:40px;">
+        <a href="" class="avatar b-3x" style="width: 75px;margin-left:auto;margin-right: auto;">
+            <img src="${account['image_url']}" alt="...">
+        </a>
+        <div class="text-center" style="font-size: 20px;margin-top:15px">
+            ${account['name']}
+        </div>
+        <div class="text-center" style="font-size: 14px;color:#9b9b9b">
+            ${account['phone']}
+        </div>
+    </div>
+
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+          <div class="weui_cell_hd"><img src="/born_lottery/static/app/quan.png" alt="" style="width:22px;margin-right:15px;display:block"></div>
+          <div class="weui_cell_bd weui_cell_primary" style="font-size: 16px">
+            <p style="margin: 0;">我的优惠券</p>
+          </div>
+          <div class="weui_cell_ft"></div>
+        </a>
+
+        <a class="weui_cell" href="javascript:;">
+          <div class="weui_cell_hd"><img src="/born_lottery/static/app/tuan.png" alt="" style="width:22px;margin-right:15px;display:block"></div>
+          <div class="weui_cell_bd weui_cell_primary" style="font-size: 16px">
+            <p style="margin: 0;">我的拼团</p>
+          </div>
+          <div class="weui_cell_ft"></div>
+        </a>
+
+        <a class="weui_cell" href="javascript:;">
+          <div class="weui_cell_hd"><img src="/born_lottery/static/app/quan.png" alt="" style="width:22px;margin-right:15px;display:block"></div>
+          <div class="weui_cell_bd weui_cell_primary" style="font-size: 16px">
+            <p style="margin: 0;">我的团购券</p>
+          </div>
+          <div class="weui_cell_ft"></div>
+        </a>
+
+        <a class="weui_cell" href="javascript:;">
+          <div class="weui_cell_hd"><img src="/born_lottery/static/app/hongbao.png" alt="" style="width:22px;margin-right:15px;display:block"></div>
+          <div class="weui_cell_bd weui_cell_primary" style="font-size: 16px">
+            <p style="margin: 0;">我的红包</p>
+          </div>
+          <div class="weui_cell_ft"></div>
+        </a>
+
+        <a class="weui_cell" href="${account['gift_url']}">
+          <div class="weui_cell_hd"><img src="/born_lottery/static/app/gift.png" alt="" style="width:22px;margin-right:15px;display:block"></div>
+          <div class="weui_cell_bd weui_cell_primary" style="font-size: 16px">
+            <p style="margin: 0;">我的奖品<span style="color:#9b9b9b">&nbsp;&nbsp;&nbsp;(${account['gift_qty']})</span></p>
+          </div>
+          <div class="weui_cell_ft"></div>
+        </a>
+
+      </div>
+
+
+</ion-view>
+</body>
+</html>

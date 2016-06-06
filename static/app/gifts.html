@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>我的奖品</title>
+    <meta name="description" content="店尚软件"/>
+    <meta name="keywords"
+          content="店尚软件,活动,伯恩网络科技,微卡APP"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/born_lottery/static/app/css/weui.min.css" type="text/css"/>
+</head>
+<body>
+<ion-view>
+    <div id="content">
+
+        <div class="panel b-a">
+            <div class="panel-heading b-b b-light">
+                <a href="" class="font-bold">奖品列表</a>
+            </div>
+            <ul class="list-group list-group-lg no-bg auto">
+
+                % for gift in gifts:
+                <li class="list-group-item clearfix">
+            <span class="clear">
+              <span>${gift.activity_gift_id.gift_id.name}</span>
+              <small class="text-muted clear text-ellipsis">${gift.create_date}</small>
+            </span>
+                </li>
+
+                % endfor
+            </ul>
+        </div>
+    </div>
+</ion-view>
+</body>
+</html>
